@@ -1,3 +1,4 @@
+import { embaralhar } from "../functions/arrays"
 import RespostaModel from "./Resposta"
 
 export default class QuestaoModel{
@@ -30,13 +31,25 @@ export default class QuestaoModel{
     }
 
     get respondida(){
-        // for(let resposta of this.#respostas) {
-        //     if(resposta.revelada) return true
-        // }
-
-        // return false
-
         return this.#respostas.some(resposta => resposta.revelada)
     }
+
+    toObject(){
+        return {
+            id: this.#id,
+            enunciado: this.#enunciado,
+            respostas: this.#respostas.map(resp => resp.toObject()),
+            acertou: this.#acertou,
+        }
+    }
+
+    embaralharRespostas(): QuestaoModel{
+        let respostasEmbaralhadas = embaralhar(this.#respostas)
+        return new QuestaoModel(this.#id, this.#enunciado, respostasEmbaralhadas, this.#acertou)
+    }
+
+    // responderCom(indice: number): QuestaoModel {
+
+    // }
 
 }
