@@ -48,8 +48,15 @@ export default class QuestaoModel{
         return new QuestaoModel(this.#id, this.#enunciado, respostasEmbaralhadas, this.#acertou)
     }
 
-    // responderCom(indice: number): QuestaoModel {
+    responderCom(indice: number): QuestaoModel {
+        const acertou = this.#respostas[indice]?.certa
+        const respostas = this.#respostas.map((resp, i) => {
+            const respostaSelecionada = indice === i
+            const deveRevelar = respostaSelecionada || resp.certa
+            return deveRevelar ? resp.revelar() : resp
+        })
 
-    // }
+        return new QuestaoModel(this.#id, this.#enunciado, respostas, acertou)
+    }
 
 }
