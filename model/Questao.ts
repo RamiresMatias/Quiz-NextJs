@@ -34,6 +34,10 @@ export default class QuestaoModel{
         return this.#respostas.some(resposta => resposta.revelada)
     }
 
+    get naoRespondida() {
+        return !this.respondida
+    }
+
     toObject(){
         return {
             id: this.#id,
