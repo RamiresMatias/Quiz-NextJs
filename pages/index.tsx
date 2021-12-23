@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import Botao from "../components/Botao";
-import Questao from "../components/Questao";
 import QuestaoModel from "../model/Questao";
 import RespostaModel from "../model/Resposta";
+import Questionario from "../components/Questionario";
 
 const questaoMock = new QuestaoModel(1, 'Qual é a melhor Cor?', [
   RespostaModel.errada('Verde'),
@@ -11,42 +10,46 @@ const questaoMock = new QuestaoModel(1, 'Qual é a melhor Cor?', [
   RespostaModel.errada('Azul'),
 ])
 
+const BASE_URL = 'http://localhost:3000/api'
 
 export default function Home() {
 
+  const [idsDasQuestoes, setIdsDasQuestoes] = useState<number[]>([])
   const [questao, setQuestao] = useState(questaoMock)
-  const questaoRef = useRef<QuestaoModel>()
-
-  // Referenciando o novo objeto a cada atualização de estado
-  useEffect(() => {
-    questaoRef.current = questao
-  }, [questao])
-
-  function respostaFornecida(indice: number){
-    setQuestao(questao.responderCom(indice))
+  
+  async function carregarIdsQuestoes() {
+    const resp = await fetch(`${BASE_URL}/questionario`)
+    const idsDasQuestoes = await resp.json()
+    setIdsDasQuestoes(idsDasQuestoes)
   }
 
-  function tempoEsgotado() {
-    if(questaoRef.current.naoRespondida)
-      setQuestao(questaoRef.current.responderCom(-1))
+  async function carregarQuestao(id: number) {
+    const resp = await fetch(`${BASE_URL}/questoes/${id}`)
+    const questao = await resp.json()
+  }
+
+  useEffect(() => {
+    carregarIdsQuestoes() 
+  }, [])
+
+  useEffect(() => {
+    !!idsDasQuestoes.length && carregarQuestao(idsDasQuestoes[0])
+  }, [idsDasQuestoes])
+
+  function questaoRespondida(questao: QuestaoModel) {
+
+  }
+
+  function irParaProximoPasso (){
+
   }
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: '25px 0px'
-    }}>
-      <Questao 
-        valor={questao} 
-        tempoPraResposta={5}
-        respostaFornecida={respostaFornecida}
-        tempoEsgotado={tempoEsgotado}
-      />
-      <Botao texto="Próxima" href="/resultado"/>
-    </div>
+    <Questionario 
+        questao={questao}
+        ultima
+        questaoRespondida={questaoRespondida}
+        irParaProximoPasso={irParaProximoPasso}
+    />
   )
 }
