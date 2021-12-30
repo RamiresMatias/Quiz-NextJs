@@ -4,13 +4,17 @@
     display: flex;
     height: 100px;
     margin: 10px;
+    perspective: 1000px;
 }
 
 .frente, .verso{
+    position: absolute;
     display: flex;
     height: 100%;
     width: 100%;
     position: absolute;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .frente{
@@ -29,6 +33,10 @@
     align-items: center;
     flex: 1;
     border-radius: 12px;
+}
+
+.verso {
+    transform: rotateY(180deg);
 }
 
 .certa {
@@ -63,4 +71,10 @@
     display: flex;
     flex:  1;
     position: relative;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+}
+
+.respostaRevelada.conteudoResposta {
+    transform: rotateY(180deg);
 }

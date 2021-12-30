@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import QuestaoModel from "../model/Questao";
-import RespostaModel from "../model/Resposta";
 import Questionario from "../components/Questionario";
 import { useRouter } from "next/router";
 
@@ -47,10 +46,8 @@ export default function Home() {
   }
 
   function idProximaPergunta() {
-    if(questao) {
-      const proximoIndice = idsDasQuestoes.indexOf(questao.id) + 1
-      return idsDasQuestoes[proximoIndice]
-    }
+    const proximoIndice = idsDasQuestoes.indexOf(questao.id) + 1
+    return idsDasQuestoes[proximoIndice]
   }
 
   function irParaProximaQuestao(proximoId: number){
@@ -59,7 +56,7 @@ export default function Home() {
 
   function finalizar() {
     router.push({
-      pathname: "/resultado",
+      pathname: '/resultado',
       query: {
         total: idsDasQuestoes.length,
         certas: respostasCertas
@@ -69,15 +66,16 @@ export default function Home() {
 
   function irParaProximoPasso (){
     const proximoId = idProximaPergunta()
-    proximoId ? irParaProximaQuestao(proximoId) : finalizar()
+    !!proximoId ? irParaProximaQuestao(proximoId) : finalizar()
   }
 
-  return (
+  return questao ? (
     <Questionario 
         questao={questao}
         ultima={idProximaPergunta() === undefined}
         questaoRespondida={questaoRespondida}
         irParaProximoPasso={irParaProximoPasso}
     />
-  )
+  ) : false
+  
 }
