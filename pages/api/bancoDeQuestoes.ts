@@ -30,6 +30,13 @@ const questoes: QuestaoModel[] = [
         RespostaModel.errada('Trapézio'),
         RespostaModel.certa('Escaleno'),
     ]),
+    new QuestaoModel(205, 'Quem reinou o Brasil primeiro?', 
+    [
+        RespostaModel.errada('Marechal Deodoro da Fonseca'),
+        RespostaModel.errada('Presidente Vargas'),
+        RespostaModel.errada('Pedro Álvares Cabral'),
+        RespostaModel.certa('Dom Pedro I'),
+    ]),
 ]
 
 export default questoes

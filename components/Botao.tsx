@@ -8,7 +8,7 @@ interface BotaoProps {
 }
 
 export default function Botao(props: BotaoProps){
-    const link = props.href || '#'
+    const link = props.href || ''
     return (
         <Link href={link}>
             <button className={styles.botao} onClick={props.onClick}>

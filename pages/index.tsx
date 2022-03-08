@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import QuestaoModel from "../model/Questao";
 import Questionario from "../components/Questionario";
 import { useRouter } from "next/router";
+import Inicio from "../components/Inicio";
 
 const BASE_URL = 'http://localhost:3000/api'
 
@@ -12,6 +13,7 @@ export default function Home() {
   const [idsDasQuestoes, setIdsDasQuestoes] = useState<number[]>([])
   const [questao, setQuestao] = useState<QuestaoModel>()
   const [respostasCertas, setRespostasCertas] = useState<number>(0)
+  const [comecar, setComecar] = useState<boolean>(false)
   
   async function carregarIdsQuestoes() {
     const resp = await fetch(`${BASE_URL}/questionario`)
@@ -66,16 +68,18 @@ export default function Home() {
 
   function irParaProximoPasso (){
     const proximoId = idProximaPergunta()
-    !!proximoId ? irParaProximaQuestao(proximoId) : finalizar()
+    if(!!proximoId) irParaProximaQuestao(proximoId)
+    else finalizar()
   }
 
-  return questao ? (
-    <Questionario 
+  return comecar ? (
+      <Questionario 
         questao={questao}
         ultima={idProximaPergunta() === undefined}
         questaoRespondida={questaoRespondida}
         irParaProximoPasso={irParaProximoPasso}
-    />
-  ) : false
-  
+      />
+  ) : (
+      <Inicio comecar={setComecar}/>
+  )
 }
