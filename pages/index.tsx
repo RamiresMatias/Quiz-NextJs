@@ -22,10 +22,14 @@ export default function Home() {
   }
 
   async function carregarQuestao(id: number) {
-    const resp = await fetch(`${BASE_URL}/questoes/${id}`)
-    const json = await resp.json()
-    const novaQuestao = QuestaoModel.criaUsandoObjeto(json)
-    setQuestao(novaQuestao)
+    try {
+      const resp = await fetch(`${BASE_URL}/questoes/${id}`)
+      const json = await resp.json()
+      const novaQuestao = QuestaoModel.criaUsandoObjeto(json)
+      setQuestao(novaQuestao)
+    } catch (error) {
+      throw error
+    }
   }
 
   useEffect(() => {
