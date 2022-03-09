@@ -71,7 +71,6 @@
     display: flex;
     flex: 1;
     position: relative;
-    transition: transform 0.3s;
     transform-style: preserve-3d;
 }
 

@@ -4,7 +4,7 @@ import Questionario from "../components/Questionario";
 import { useRouter } from "next/router";
 import Inicio from "../components/Inicio";
 
-const BASE_URL = 'https://quiz-ten-eta.vercel.app/api'
+const BASE_URL = 'http://localhost:3000/api'
 
 export default function Home() {
 
@@ -22,10 +22,14 @@ export default function Home() {
   }
 
   async function carregarQuestao(id: number) {
-    const resp = await fetch(`${BASE_URL}/questoes/${id}`)
-    const json = await resp.json()
-    const novaQuestao = QuestaoModel.criaUsandoObjeto(json)
-    setQuestao(novaQuestao)
+    try {
+      const resp = await fetch(`${BASE_URL}/questoes/${id}`)
+      const json = await resp.json()
+      const novaQuestao = QuestaoModel.criaUsandoObjeto(json)
+      setQuestao(novaQuestao)
+    } catch (error) {
+      throw error
+    }
   }
 
   useEffect(() => {
